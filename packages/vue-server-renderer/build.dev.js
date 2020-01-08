@@ -9056,13 +9056,15 @@ TemplateRenderer.prototype.renderState = function renderState (context, options)
 TemplateRenderer.prototype.renderScripts = function renderScripts (context) {
     var this$1 = this;
 
+  var shouldRenderAsyncScripts = this.options.shouldRenderAsyncScripts !== false;
+
   if (this.clientManifest) {
     var initial = this.preloadFiles.filter(function (ref) {
         var file = ref.file;
 
         return isJS(file);
       });
-    var async = (this.getUsedAsyncFiles(context) || []).filter(function (ref) {
+    var async = ((shouldRenderAsyncScripts && this.getUsedAsyncFiles(context)) || []).filter(function (ref) {
         var file = ref.file;
 
         return isJS(file);
@@ -9139,6 +9141,7 @@ function createRenderer (ref) {
   var cache = ref.cache;
   var shouldPreload = ref.shouldPreload;
   var shouldPrefetch = ref.shouldPrefetch;
+  var shouldRenderAsyncScripts = ref.shouldRenderAsyncScripts;
   var clientManifest = ref.clientManifest;
   var serializer = ref.serializer;
 
@@ -9148,6 +9151,7 @@ function createRenderer (ref) {
     inject: inject,
     shouldPreload: shouldPreload,
     shouldPrefetch: shouldPrefetch,
+    shouldRenderAsyncScripts: shouldRenderAsyncScripts,
     clientManifest: clientManifest,
     serializer: serializer
   });
